@@ -1,9 +1,11 @@
 from math import sqrt
 
+
 class City:
     x = 0
     y = 0
     name = ""
+
     def __init__(self, x, y, name):
         self.x = x
         self.y = y
@@ -13,6 +15,7 @@ class City:
         return "City %s" % self.name
 
     def distance(a, b):
-        dx = a.x - b.x;
-        dy = a.y - b.y;
-        return sqrt(dx*dx+dy*dy);
+        dx = a.x - b.x
+        dy = a.y - b.y
+
+        return sqrt(dx*dx+dy*dy)
