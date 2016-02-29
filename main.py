@@ -4,10 +4,20 @@ from population import Population
 import matplotlib.pyplot as plt
 import csv
 
-GENERATION_SIZE = 40
-MUTATE_COUNT = 6
-CROSSOVER_COUNT = 6
-CROSSOVER_SIZE = 5
+# simulation constants
+GENERATION_SIZE = 80
+MUTATE_COUNT = 3
+CROSSOVER_COUNT = 12
+CROSSOVER_SIZE_MIN = 3
+CROSSOVER_SIZE_MAX = 7
+
+# simulation settings
+SIMULATED_POPULATION_COUNT = 100
+
+# plotting settings
+PLOT_AVERAGE_HISTOGRAM = True
+PLOT_AVERAGE_HISTOGRAM_SAMPLE_COUNT = 3
+PLOT_PATH = False
 
 
 def preprocessData(filename):
@@ -27,53 +37,52 @@ def run():
     cities = preprocessData("berlin.tsp")
 
     pop = Population(cities, GENERATION_SIZE)
-
     history = []
     i = 0
     best = pop.getBestMember().length()
-    for j in range(1500):
+    for j in range(SIMULATED_POPULATION_COUNT):
         # get next generation
         pop = pop.copyPopulation()
-        # pop.crossover(CROSSOVER_COUNT, CROSSOVER_SIZE)
-        # pop.mutate(MUTATE_COUNT)
-        print(list(map(lambda x: x.length(), pop._members)))
+        pop.crossover(CROSSOVER_COUNT, CROSSOVER_SIZE_MIN, CROSSOVER_SIZE_MAX)
+        pop.mutate(GENERATION_SIZE-CROSSOVER_COUNT, MUTATE_COUNT)
 
         best_member = pop.getBestMember()
         new_fitness = best_member.length()
-        print(new_fitness)
-        import time
-        time.sleep(2.5)
+
         history.append(new_fitness)
 
         if(best > new_fitness):
             best = new_fitness
 
-            # gra = int(122);
-            # plt.clf();
-            # for c in best_member.cities:
-            #     plt.plot([c.x], [c.y], color = "red", aa = True, marker = "o");
-            #     plt.annotate(int(c.name), (c.x, c.y), color = "red");
+            if(PLOT_PATH):
+                gra = int(122)
+                plt.clf()
+                for c in best_member._cities:
+                    plt.plot([c.x], [c.y], color="red", aa=True, marker="o")
+                    plt.annotate(int(c.name), (c.x, c.y), color="red")
 
-            # plt.title('Fitness = %.2fkm' % new_fitness);
-            # best_member.draw("#%02x%02x%02x" % (gra, gra, gra) );
-            # plt.savefig("stats/fig%s.png" % i);
-            # i += 1;
-
-            print(best)
-    # plt.clf();
-    # plt.plot(history);
-    # plt.savefig("histogram.png");
-
+                plt.title('Fitness = %.2fkm' % new_fitness)
+                best_member.draw(plt, "#%02x%02x%02x" % (gra, gra, gra))
+                plt.savefig("stats/fig%s.png" % i)
+                i += 1
     return history
 
 if __name__ == '__main__':
+    print("Started simulation with:")
+    print("GENERATION_SIZE = ", GENERATION_SIZE)
+    print("MUTATE_COUNT = ", MUTATE_COUNT)
+    print("CROSSOVER_COUNT = ", CROSSOVER_COUNT)
+    print("CROSSOVER_SIZE_MIN = ", CROSSOVER_SIZE_MIN)
+    print("CROSSOVER_SIZE_MAX = ", CROSSOVER_SIZE_MAX)
+
     runs = []
-    for i in range(10):
+    for i in range(PLOT_AVERAGE_HISTOGRAM_SAMPLE_COUNT):
         runs.append(run())
+        print(runs[-1][-1])
         print("run", i)
 
-    plt.clf()
-    plt.ylim([0, 30000])
-    plt.plot(list(map(lambda x: float(sum(x))/len(x), zip(*runs))))
-    plt.savefig("stats/avg_histogram.png")
-    print("end")
+    if(PLOT_AVERAGE_HISTOGRAM):
+        plt.clf()
+        plt.ylim([0, 30000])
+        plt.plot(list(map(lambda x: float(sum(x))/len(x), zip(*runs))))
+        plt.savefig("stats/avg_histogram.png")

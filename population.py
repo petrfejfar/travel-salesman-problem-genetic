@@ -5,18 +5,18 @@ from path import Path
 
 
 class Population:
-    _members = []
-
     def __init__(self, cities, count):
+        self._members = []
         for i in range(count):
             self._members.append(Path(cities))
+        self._sort()
 
     def _sort(self):
         self._members.sort(key=lambda x: x.length())
 
-    # TODO probably delete
-    # def __repr__(self):
-    #    return "<" + "; ".join(map(lambda x: str(x.length()), self._members)) + ">";
+    def __repr__(self):
+        return "Population with" + str(len(self._members)) + " members, fitnesses: <" + \
+            "; ".join(map(lambda x: str(x.length()), self._members)) + ">"
 
     def getBestMember(self):
         self._sort()
@@ -24,10 +24,11 @@ class Population:
         return self._members[0]
 
     def copyPopulation(self):
-        return deepcopy(self)
+        copy = Population(None, 0)
+        copy._members = self._members
+        return copy
 
-    def crossover(self, count, cross_size):
-        # print(self._members)
+    def crossover(self, count, cross_size_min, cross_size_max):
         survive_count = len(self._members) - count
 
         # crossover new members
@@ -40,6 +41,7 @@ class Population:
 
             father = self._members[father_index]
             mother = self._members[mother_index]
+            cross_size = randint(cross_size_min, cross_size_max)
             crossed = father.crossover(mother, cross_size)
             new_members.append(crossed)
 
@@ -48,13 +50,12 @@ class Population:
 
         return
 
-    def mutate(self, count):
-        # print("-------")
-        # print(list(map(lambda x: x.length(), self._members)))
-
+    def mutate(self, lower_index, count):
         # mutate
+        n = len(self._members)
         for i in range(count):
-            rand_index = randint(0, len(self._members)-1)
+            # we mutate only in selection of <lower_index, n) to mutate only cross members
+            rand_index = randint(lower_index, n-1)
             self._members[rand_index].mutate()
 
         return
