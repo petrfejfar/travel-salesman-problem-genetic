@@ -15,6 +15,7 @@ We are solving classical travelling salesman problem on given test data set by g
 We need find path between the cities to visit each city only once. We are trying to find as short path as possible.
 
 By task definition we need to answer:
+
 1. Explain the important operations of the employed algorithm (e.g. GA) to solve this problem (Answer in section [Approach](#approach))
 2. Explain the representation of the individual solutions in your algorithm.
 3. Give the equation of the fitness function used by your algorithm.
@@ -24,7 +25,12 @@ By task definition we need to answer:
 
 ### Data set
 
-Data set consist of 52 cities with name (first column) and position (second and third column).
+Data set consist of 52 cities with name and position.
+
+| First column  | Second column | Third column  |
+| ------------- |---------------| --------------|
+| City name     | x position    | y position    |
+
 
 Example:
 
@@ -44,6 +50,7 @@ Travelling salesman problem is NP-complete problem, so proposed algorithm is fro
 #### Cycle
 
 TSP(T, N, M, C, C<sub>min</sub>, C<sub>max</sub>)
+
 1. Generate initial population.
 2. Sort population by fitness function.
 3. Remove last C population members.
@@ -53,6 +60,7 @@ TSP(T, N, M, C, C<sub>min</sub>, C<sub>max</sub>)
 7. If time of simulation i greater than T return fitness of first member, go to step 2 otherwise.
 
 Where
+
 - T is maximal time of simulation
 - N is population size
 - M is mutation rate
