@@ -1,6 +1,6 @@
 # Travelling saleman problem - genetic algorithm
 
-Petr Fejfar, pfejfar _at_ gmail.com
+Petr Fejfar, pfejfar \_at\_ gmail.com
 
 ---
 
@@ -63,7 +63,7 @@ TODO what is tournament selection strategy
 
 [Data set](#dataset) is reprenting *G = (V, E)*, where *V* are cities and *E* are path between them. We set distance function as Euclidean distance *d(e) = d(a, b) = sqrt( (a<sub>x</sub>-b<sub>x</sub>)<sup>2</sup> + (a<sub>y</sub>-b<sub>y</sub>)<sup>2</sup> )*, where *e&#8712;E.* and *(a, b) = e*.
 
-By member *M&#8834;E* we mean Hamiltonian path on graph *G* and population *P* is set of members *M&#8834;P*. Members are easily represented as permutation of **V**.
+By member *M&#8834;E* we mean Hamiltonian path on graph *G* and population *P* is set of members *M&#8834;P*. Members are easily represented as permutation of *V*.
 
 #### Fitness <a name="fitness"></a>
 
@@ -100,8 +100,6 @@ Mutation is done by swapping two elements in permutation.
 
 Crossover is TODO.
 
-
-
 ### Genetic algorithm parameters <a name="parameters"></a>
 
 TODO tell what each parameter means
@@ -114,7 +112,7 @@ TODO tell what each parameter means
 
 ### Automatic setting parameters
 
-We choose for tuning parameters use genetic algorithm. We use different design than **TSP(** ... **)**. Difference is in initial
+We choose for tuning parameters use genetic algorithm. We use different design than **TSP(** ... **)**. Difference is in initial TODO
 
 ## Results <a name="results"></a>
 
