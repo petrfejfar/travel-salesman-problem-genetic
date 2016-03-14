@@ -49,15 +49,15 @@ Example:
 
 ## Approach <a name="approach"></a>
 
-Travelling salesman problem is NP-complete problem, so proposed algorithm is from evolutionary family.
+Travelling salesman problem is NP-complete problem. We use as approximation algorithm from evolutionary family.
 
 ### Genetic algorithm design
 
-We use stationary model with tournament selection strategy.
+We use stationary model with tournament linear order strategy.
 
-TODO what is stationary model
+In stationary model we are using stable set of population. Every population we alter only subset of this population. Best members of population survives to next generation.
 
-TODO what is tournament selection strategy
+In linear order strategy we choose the best individuals to evolve new population.
 
 #### Population <a name="population"></a>
 
@@ -98,37 +98,53 @@ Initial population members are generated as random Hamiltonian paths on graph *G
 
 Mutation is done by swapping two elements in permutation.
 
-Crossover is TODO.
+Crossover is done by taking 2 parent members and generation offspring from them. Generation is done by taking random fixed sizes sequence in *parent A* and copying to offspring. Then we takes rest of permutation from *parent B* and fill offspring in same order as it was in *parent A*. By this way we create valid permutation.
+
+Example (choose sequence of length 3 on index 2):
+
+| | p<sub>0</sub> | p<sub>1</sub> |p<sub>2</sub> |p<sub>3</sub> |p<sub>4</sub> |p<sub>5</sub> |p<sub>6</sub> |
+| ------------- |---------------| --------------|
+| **Parent A**     | 7 | 3 | **5** | **2** | **1** | 6 | 4 |
+| **Parent B**     | 1 | *6* | *4* | 2 | *3* | 5 | *7* |
+| **Offspring**     | *6* | *4* | **5** | **2** | **1** | *3* | *7* |
 
 ### Genetic algorithm parameters <a name="parameters"></a>
 
-TODO tell what each parameter means
+Choose of right parameters has huge impact on simulation performance.
 
-- *N* is population size
-- *M* is mutation rate
-- *C* is crossover rate
-- *C<sub>min</sub>* is minimal crossover size
-- *C<sub>max</sub>* is maximal crossover size
+*N* is population size and by increasing *N* we slower the generation, but if we use small population size we can not transfer information about good member to next generation.
+
+*M* is mutation rate. By increasing it we increase chance to tweak result in longer runs. In early stages of simulation it has lower impact on improving fitness than crossover. This is **O(*1*)** operation.
+
+*C* is crossover rate. By increasing it we speed up approach to best fitness in early stage of simulation. In later phase of simulation there is no huge impact. This is because in early stage is bigger chance to find big sequence, from *parent A* which update result. In later phases only smaller sequence will improve result - this is basically mutation. Crossover is **O(*N*)** operation so is slowest part in generation next population. It has impact on speed of generation.
+
+*C<sub>min</sub>* is minimal crossover size and *C<sub>max</sub>* is maximal crossover size. We need to find proper value. Too small interval has same properties as mutation and to big interval has same properties as crossover. So there is trade off in this parameter.
 
 ### Automatic setting parameters
 
-We choose for tuning parameters use genetic algorithm. We use different design than **TSP(** ... **)**. Difference is in initial TODO
+We choose for tuning parameters use genetic algorithm. We use different design than **TSP(** ... **)**. Difference we use only generational model. Generational model generate new initial population every population. This model was chosen because of lack of time on this task. In future we want to tweak this model by adding mutation and crossover.
+
+Members are parameters for **TSP(** ... **)**. Fitness in this case is best fitness of **TSP(** ... **)** in time *T*. We chose *T* to 300sec. This is dependent of computer computational force. As reference machine we use Intel Core i7-4900MQ CPU @ 2.80 GHz, 32GB RAM, SSD disc.
 
 ## Results <a name="results"></a>
 
 By manual tuning of parameters we were able to get best result about **9k** fitness on test data.
 
-By using genetic algorithm to determine algorithm parameters we were able to get best result as **11216,56**.
+By using genetic algorithm to determine algorithm parameters we were able to get best result as **8007,56**.
 
 ![Best path](/doc/img/best_result.png "Best path")
 
 We use for that result generated parameters:
-- Population size of 0
-- Mutation count of 0
-- Crossover count of 0
+- Population size of 2569
+- Mutation count of 289
+- Crossover count of 263
 - Minimal crossover size of 0
-- Maximal crossover size of 0
+- Maximal crossover size of 10
 
 Histogram of best parameters algorithm is below.
 
 ![Best algorithm - fitness histogram](/doc/img/best_alg_fitnes_hist.png "Best algorithm - fitness histogram")
+
+## Future work
+
+This task was limited by time to work on it. In future we want to tweak parameters generation and let simulation work for longer time. We actually had best result around 7.7k, but we have unfortunately have no record of that.
