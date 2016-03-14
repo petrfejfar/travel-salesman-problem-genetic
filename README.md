@@ -102,7 +102,7 @@ Crossover is done by taking 2 parent members and generation offspring from them.
 
 Example (choose sequence of length 3 on index 2):
 
-| | p<sub>0</sub> | p<sub>1</sub> |p<sub>2</sub> |p<sub>3</sub> |p<sub>4</sub> |p<sub>5</sub> |p<sub>6</sub> |
+| Member/permutation | p<sub>0</sub> | p<sub>1</sub> |p<sub>2</sub> |p<sub>3</sub> |p<sub>4</sub> |p<sub>5</sub> |p<sub>6</sub> |
 | ------------- |---------------| --------------|
 | **Parent A**     | 7 | 3 | **5** | **2** | **1** | 6 | 4 |
 | **Parent B**     | 1 | *6* | *4* | 2 | *3* | 5 | *7* |
